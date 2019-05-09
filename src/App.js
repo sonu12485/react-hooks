@@ -1,24 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+
+import Todo from "./Todo";
 
 function App() {
+  const [todos, setTodo] = useState([
+    {
+      text: "First TODO"
+    },
+    {
+      text: "Second TODO"
+    }
+  ]);
+  const [textValue, setValue] = useState("");
+
+  const addTodo = e => {
+    e.preventDefault();
+    if (!textValue) return;
+
+    setTodo([...todos, { text: textValue }]);
+    setValue("");
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="header">TODO list</div>
+      <div className="todos">
+        {todos.map((todo, i) => {
+          return <Todo todo={todo} index={i} key={i} />;
+        })}
+      </div>
+      <div className="todo-form">
+        <form onSubmit={addTodo}>
+          <input
+            className="input"
+            placeholder="Enter a new TODO"
+            value={textValue}
+            onChange={e => {
+              setValue(e.target.value);
+            }}
+          />
+        </form>
+      </div>
     </div>
   );
 }
